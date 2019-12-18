@@ -1,0 +1,171 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| dualcore           |
+| hue                |
+| metastore          |
+| mysql              |
+| test               |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use dualcore;
+
+mysql> show tables;
++--------------------+
+| Tables_in_dualcore |
++--------------------+
+| customers          |
+| employees          |
+| order_details      |
+| orders             |
+| products           |
+| suppliers          |
++--------------------+
+6 rows in set (0.00 sec)
+
+
+
+mysql> describe customers;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cust_id | int(11)     | NO   | PRI | NULL    |       |
+| fname   | varchar(15) | YES  |     | NULL    |       |
+| lname   | varchar(20) | YES  |     | NULL    |       |
+| address | varchar(40) | YES  |     | NULL    |       |
+| city    | varchar(30) | YES  |     | NULL    |       |
+| state   | char(2)     | YES  |     | NULL    |       |
+| zipcode | char(5)     | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table customers
+
+
+
+mysql> describe employees;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| emp_id    | char(9)     | NO   | PRI | NULL    |       |
+| fname     | varchar(15) | YES  |     | NULL    |       |
+| lname     | varchar(20) | YES  |     | NULL    |       |
+| address   | varchar(40) | YES  |     | NULL    |       |
+| city      | varchar(30) | YES  |     | NULL    |       |
+| state     | char(2)     | YES  |     | NULL    |       |
+| zipcode   | char(5)     | YES  |     | NULL    |       |
+| job_title | varchar(35) | YES  |     | NULL    |       |
+| email     | varchar(25) | YES  |     | NULL    |       |
+| active    | char(1)     | NO   |     | Y       |       |
+| salary    | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table employees
+
+
+
+mysql> describe order_details;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| order_id | int(11) | NO   |     | NULL    |       |
+| prod_id  | int(11) | NO   |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table order_details \
+--split-by order_id
+
+
+
+mysql> describe orders;
++------------+----------+------+-----+---------+-------+
+| Field      | Type     | Null | Key | Default | Extra |
++------------+----------+------+-----+---------+-------+
+| order_id   | int(11)  | NO   | PRI | NULL    |       |
+| cust_id    | int(11)  | NO   |     | NULL    |       |
+| order_date | datetime | NO   |     | NULL    |       |
++------------+----------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table orders
+
+
+
+mysql> describe products;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| prod_id     | int(11)     | NO   | PRI | NULL    |       |
+| brand       | varchar(20) | YES  |     | NULL    |       |
+| name        | varchar(75) | YES  |     | NULL    |       |
+| price       | int(11)     | YES  |     | NULL    |       |
+| cost        | int(11)     | YES  |     | NULL    |       |
+| shipping_wt | smallint(6) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table products
+
+
+
+mysql> describe suppliers;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| supp_id | int(11)     | NO   | PRI | NULL    |       |
+| company | varchar(60) | YES  |     | NULL    |       |
+| contact | varchar(60) | YES  |     | NULL    |       |
+| address | varchar(50) | YES  |     | NULL    |       |
+| city    | varchar(30) | YES  |     | NULL    |       |
+| state   | char(2)     | YES  |     | NULL    |       |
+| zipcode | char(2)     | YES  |     | NULL    |       |
+| phone   | char(14)    | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training \
+--password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table suppliers;
+
+
+
+
