@@ -1,0 +1,6 @@
+Power off your Raspberry Pi and remove the SD card.
+Insert the SD card into your computer’s card reader. The SD card will mount automatically.
+Navigate to the SD card boot directory using your OS file manager. Linux and macOS users can also do this from the command line.
+Create a new empty file named ssh, without any extension, inside the boot directory.
+Remove the SD card from your computer and put it in your Raspberry Pi.
+Power on your Pi board. On boot Pi will check whether this file exists and if it does, SSH will be enabled and the file is removed.
